@@ -7,23 +7,8 @@ on:
       - main
 
 jobs:
-  test-environment-variable-method-setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ./
-        with:
-          min-version: 3.6
-  test-environment-variable-method-load:
-    needs: test-environment-variable-method-setup
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ${{fromJson($LATEST_PYTHON_VERSIONS)}}
-    steps:
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+
+  # Test 1 - Specify matrix using the latest-python-versions output
 
   test-output-method-setup:
     runs-on: ubuntu-latest
@@ -35,8 +20,9 @@ jobs:
         id: get-python-versions
         with:
           min-version: 3.6
+
   test-output-method-load:
-    needs: test-environment-variable-method-setup
+    needs: test-output-method-setup
     runs-on: ubuntu-latest
     strategy:
       matrix:

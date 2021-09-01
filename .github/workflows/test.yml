@@ -23,14 +23,14 @@ jobs:
         with:
           path: ~/.local
           key: poetry-cache-0
-      - uses: snok/install-poetry@v1
+      - uses: snok/install-poetry@v1.2.0-rc1
         with:
           virtualenvs-in-project: true
       - uses: actions/cache@v2
         id: cache-venv
         with:
           path: .venv
-          key: ${{ hashFiles('**/poetry.lock') }}-0
+          key: ${{ hashFiles('**/poetry.lock') }}-1
       - run: poetry install --no-interaction --no-root
         if: steps.cache-venv.outputs.cache-hit != 'true'
       - run: source $VENV && pytest main_tests.py --cov-report=xml

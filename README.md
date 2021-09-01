@@ -33,36 +33,6 @@ See examples for recommended use.
 
 ### Example
 
-## TODO
-
-```yaml
-name: Test
-
-on: pull_request
-
-jobs:
-  get-python-versions:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: sondrelg/latest-python-versions@v1
-        id: get-python-versions
-        with:
-          min-version: 3.7
-          max-version: 3.10
-          include-prereleases: true
-  test:
-    needs: get-python-versions
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{fromJson($LATEST_PYTHON_VERSIONS)}}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-```
-
-
 ## Normal use
 
 ```yaml
@@ -71,27 +41,31 @@ name: Test
 on: pull_request
 
 jobs:
-  get-python-versions:
+  set-python-versions:
     runs-on: ubuntu-latest
     outputs:
       python-matrix: ${{ steps.get-python-versions.outputs.latest-python-versions }}
     steps:
+      - uses: actions/checkout@v2
       - uses: sondrelg/latest-python-versions@v1
+        if: steps.cache-versions.outputs.cache-hit != 'true'
         id: get-python-versions
         with:
           min-version: 3.7
-          max-version: 3.10
-          include-prereleases: true
+          max-version: 3.10  # defaults to latest when unspecified
+          include-prereleases: true  # default false
+
   test:
-    needs: get-python-versions
+    needs: set-python-versions
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.get-python-versions.outputs.python-matrix)}}
+      matrix:
+        python-version: ${{fromJson(needs.set-python-versions.outputs.python-matrix)}}
     steps:
-      - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
 ```
 
 ### Caching versions

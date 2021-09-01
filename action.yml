@@ -17,7 +17,7 @@ inputs:
     default: 'false'
 outputs:
   latest-python-versions:
-    description: 'List of Python versions that can be loaded as a matrix with ${{fromJson(needs..outputs.full-matrix)}}'
+    description: 'List of Python versions that can be loaded as a matrix with fromJson'
 runs:
   using: 'docker'
   image: 'Dockerfile'
