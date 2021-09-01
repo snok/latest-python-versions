@@ -1,13 +1,9 @@
 # Latest Python Versions
 
-Fetches the latest Python minor version available in Github Actions.
+Github Action that fetches the latest Python minor versions available.
 
-Python version matrices constantly need to be updated.
-This is a bit of a nuisance, but important - especially if you're trying to keep
-your software compatible with the latest Python versions.
-
-In short, this action lets you move from a statically defined version matrix,
-to a dynamic one.
+Enables you to move from statically defined (and maintained) matrices to
+dynamic ones.
 
 Versions are fetched from [here](https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json).
 
