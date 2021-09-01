@@ -129,7 +129,7 @@ jobs:
     needs: get-python-versions
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.get-python-versions.outputs.python-matrix)}}
+      python-version: ${{fromJson(needs.get-python-versions.outputs.python-matrix)}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -166,7 +166,8 @@ jobs:
     needs: get-python-versions
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.get-python-versions.outputs.python-matrix)}}
+      matrix:
+        python-version: ${{fromJson(needs.get-python-versions.outputs.python-matrix)}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
