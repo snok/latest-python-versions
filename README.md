@@ -43,28 +43,28 @@ name: Test
 on: pull_request
 
 jobs:
-  # Define this job to run before your other jobs
-  set-python-versions:
+  linting:
+    ...
+
+  # Define the job to run before your matrix job
+  get-python-versions:
     runs-on: ubuntu-latest
     outputs:
-      python-matrix: ${{ steps.get-python-versions.outputs.latest-python-versions }}
+      python-matrix: ${{ steps.get-python-versions-action.outputs.latest-python-versions }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: snok/latest-python-versions@v1
-        if: steps.cache-versions.outputs.cache-hit != 'true'
-        id: get-python-versions
-        with:
-          min-version: 3.7
-          max-version: 3.10
-          include-prereleases: true
+    - uses: snok/latest-python-versions@v1
+      id: get-python-versions-action
+      with:
+        min-version: 3.8
+        include-prereleases: true
 
   # Then use the output from the previous job in the matrix definition
   test:
-    needs: set-python-versions
+    needs: [linting, get-python-versions]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ${{fromJson(needs.set-python-versions.outputs.python-matrix)}}
+        python-version: ${{ fromJson(needs.set-python-versions.outputs.python-matrix) }}
     steps:
       - uses: actions/setup-python@v2
         with:
