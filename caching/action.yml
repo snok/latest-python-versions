@@ -35,7 +35,8 @@ runs:
         key: ${{ steps.set-cache-key.outputs.cache-key }}
 
     # Fetch new versions if no cache was found
-    - uses: snok/latest-python-versions@v1
+    # TODO: Update to v1 when v1 is released
+    - uses: snok/latest-python-versions@v0.1
       if: steps.cache-versions.outputs.cache-hit != 'true'
       id: get-python-versions
       with:
