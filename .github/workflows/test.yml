@@ -31,7 +31,9 @@ jobs:
         with:
           path: .venv
           key: ${{ hashFiles('**/poetry.lock') }}-1
-      - run: poetry install --no-interaction --no-root
+      - run: |
+          poetry cache clear . --all
+          poetry install --no-interaction --no-root
         if: steps.cache-venv.outputs.cache-hit != 'true'
       - run: source $VENV && pytest main_tests.py --cov-report=xml
       - uses: codecov/codecov-action@v2

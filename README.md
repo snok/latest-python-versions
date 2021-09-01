@@ -24,12 +24,13 @@ To use the action, simply throw this into one of your workflows
     include-prereleases: true
 ```
 
-This will produce an `output` that can be accessed with `${{ steps.get-python-versions.outputs.latest-python-versions }}`.
+The action produces an `output` that can be accessed using:
 
-The output must always be referenced as `latest-python-versions`, while the second element in the output must just match
-the `id` of the step you defined for the action run.
+```
+${{ steps.get-python-versions.outputs.latest-python-versions }}
+```
 
-See examples for recommended use.
+See examples below for recommended usage.
 
 ### Example
 
