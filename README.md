@@ -32,9 +32,9 @@ ${{ steps.get-python-versions.outputs.latest-python-versions }}
 
 See examples below for recommended usage.
 
-### Example
+## Examples
 
-## Normal use
+### Normal use
 
 ```yaml
 name: Test
@@ -42,6 +42,7 @@ name: Test
 on: pull_request
 
 jobs:
+  # Define this job to run before your other jobs
   set-python-versions:
     runs-on: ubuntu-latest
     outputs:
@@ -56,6 +57,7 @@ jobs:
           max-version: 3.10  # defaults to latest when unspecified
           include-prereleases: true  # default false
 
+  # Then use the output from the previous job in the matrix definition
   test:
     needs: set-python-versions
     runs-on: ubuntu-latest
@@ -66,7 +68,6 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-
 ```
 
 ### Caching versions
@@ -87,17 +88,19 @@ jobs:
     outputs:
       python-matrix: ${{ steps.export-python-versions.outputs.python-versions }}
     steps:
-      - name: Set cache key based on week number, so cache expires once a week
-        id: set-cache-key
+      # Set cache key based on week number, so cache expires once a week
+      - id: set-cache-key
         run: |
           week_number=$(date +%V)
           echo "::set-output name=cache-key::$week_number"
+      # Try to load cached versions by week number
       - name: Load cached versions
         uses: actions/cache@v2
         id: cache-versions
         with:
           path: .python-versions-file
           key: ${{ steps.set-cache-key.outputs.cache-key }}
+      # Fetch new versions if no cache was found
       - uses: sondrelg/latest-python-versions@v1
         if: steps.cache-versions.outputs.cache-hit != 'true'
         id: get-python-versions
@@ -105,9 +108,11 @@ jobs:
           min-version: 3.7
           max-version: 3.10
           include-prereleases: true
+      # Save results to file if no cache was found
       - name: Create new .python-versions-file
         run: echo "${{ steps.get-python-versions.outputs.latest-python-versions }}" > .python-versions-file
         if: steps.cache-versions.outputs.cache-hit != 'true'
+      # Load file contents and export values
       - name: Export .python-versions-file
         id: export-python-versions
         run: |
