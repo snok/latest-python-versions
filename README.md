@@ -160,6 +160,8 @@ jobs:
       python-matrix: ${{ steps.export-python-versions.outputs.python-versions }}
     steps:
       - uses: snok/latest-python-versions/caching
+        with:
+          min-version: 3.7
   test:
     needs: get-python-versions
     runs-on: ubuntu-latest
