@@ -39,6 +39,7 @@ def main(min_version: str, max_version: str, include_prereleases: str) -> None:
 
     subprocess.call(['echo', f'"LATEST_PYTHON_VERSIONS={json.dumps(list(versions.values()))}"', '>>', '"$GITHUB_ENV"'])
     subprocess.call(['echo', f'::set-output name=latest-python-versions::{json.dumps(list(versions.values()))}'])
+    print(json.dumps(list(versions.values())))
 
 
 if __name__ == '__main__':

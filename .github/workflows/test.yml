@@ -18,12 +18,12 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.10.0-rc.1
+          python-version: 3.9
       - uses: actions/cache@v2
         with:
           path: ~/.local
           key: poetry-cache-0
-      - uses: snok/install-poetry@v1.2.0-rc1
+      - uses: snok/install-poetry@v1
         with:
           virtualenvs-in-project: true
       - uses: actions/cache@v2
@@ -32,7 +32,7 @@ jobs:
           path: .venv
           key: ${{ hashFiles('**/poetry.lock') }}-1
       - run: |
-          poetry cache clear . --all
+          pip install pyparsing==2.4.7
           poetry install --no-interaction --no-root
         if: steps.cache-venv.outputs.cache-hit != 'true'
       - run: source $VENV && pytest main_tests.py --cov-report=xml
@@ -40,3 +40,4 @@ jobs:
         with:
           file: ./coverage.xml
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
