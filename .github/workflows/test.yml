@@ -1,4 +1,4 @@
-name: Lint, test, and upload codecov
+name: tests
 
 on:
   pull_request:
