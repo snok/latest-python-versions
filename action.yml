@@ -1,0 +1,27 @@
+name: 'Latest Python Versions'
+description: 'Get latest Python versions to run in a matrix'
+branding:
+  icon: "tag"
+  color: "blue"
+inputs:
+  min-version:
+    description: 'The minimum minor version to include.'
+    required: true
+  max-version:
+    description: 'The maximum minor version to include.'
+    required: false
+    default: 'latest'
+  include-prereleases:
+    description: 'Whether to include new minor version of Python that have no official releases.'
+    required: false
+    default: 'false'
+outputs:
+  latest-python-versions:
+    description: 'List of Python versions that can be loaded as a matrix with ${{fromJson(needs..outputs.full-matrix)}}'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.min-version }}
+    - ${{ inputs.max-version }}
+    - ${{ inputs.include-prereleases }}

@@ -1,0 +1,47 @@
+name: Test action
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-environment-variable-method-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          min-version: 3.6
+  test-environment-variable-method-load:
+    needs: test-environment-variable-method-setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ${{fromJson($LATEST_PYTHON_VERSIONS)}}
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+  test-output-method-setup:
+    runs-on: ubuntu-latest
+    outputs:
+      python-matrix: ${{ steps.get-python-versions.outputs.latest-python-versions }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        id: get-python-versions
+        with:
+          min-version: 3.6
+  test-output-method-load:
+    needs: test-environment-variable-method-setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ${{fromJson(needs.test-output-method-setup.outputs.python-matrix)}}
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
