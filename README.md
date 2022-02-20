@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ${{ fromJson(needs.set-python-versions.outputs.python-matrix) }}
+        python-version: ${{ fromJson(needs.get-python-versions.outputs.python-matrix) }}
     steps:
       - uses: actions/setup-python@v2
         with:
