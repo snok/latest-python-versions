@@ -8,7 +8,7 @@ Python versions available on Github Actions.
 
 If you're already running tests on multiple Python versions,
 this action will allow you to replace your static
-matrix definitions with **dynamic** ones.
+matrix definitions with dynamic ones.
 With a dynamic version matrix definition, you will for example always be
 on the latest pre-release of the next upcoming Python release.
 
