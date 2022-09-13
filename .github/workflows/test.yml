@@ -15,18 +15,18 @@ jobs:
     needs: linting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.9
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ~/.local
           key: poetry-cache-0
       - uses: snok/install-poetry@v1
         with:
           virtualenvs-in-project: true
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache-venv
         with:
           path: .venv

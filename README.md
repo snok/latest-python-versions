@@ -66,7 +66,7 @@ jobs:
       matrix:
         python-version: ${{ fromJson(needs.get-python-versions.outputs.python-matrix) }}
     steps:
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 ```
