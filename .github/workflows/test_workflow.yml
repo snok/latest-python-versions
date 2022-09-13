@@ -31,3 +31,25 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+
+  test-output-method-setup-eol:
+    runs-on: ubuntu-latest
+    outputs:
+      python-matrix: ${{ steps.get-python-versions.outputs.latest-python-versions }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        id: get-python-versions
+        with:
+          min-version: EOL
+
+  test-output-method-load-eol:
+    needs: test-output-method-setup-eol
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ${{fromJson(needs.test-output-method-setup.outputs.python-matrix)}}
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
