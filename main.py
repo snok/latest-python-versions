@@ -15,8 +15,8 @@ def main(min_version: str, max_version: str, include_prereleases: str) -> None:
     Set a LATEST_PYTHON_VERSIONS environment variable, and a latest-python-versions output,
     containing the latest Python versions found within the specified bounds.
 
-    :param min_version: The version lower bound or 'EOL'.
-    :param max_version: The version upper bound or 'latest'.
+    :param min_version: The major.minor version lower bound or 'EOL'.
+    :param max_version: The major.minor version upper bound or 'latest'.
     :param include_prereleases: Whether to include pre-releases. Defaults to false on an action level.
     """
     if min_version.upper() == 'EOL':
