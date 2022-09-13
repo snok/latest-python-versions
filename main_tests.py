@@ -23,5 +23,4 @@ def test_main_without_max_version(capsys, args, result):
         responses.add(responses.Response(method='GET', url=EOL_PYTHON_VERSIONS_URL, json=json.load(f)))
     main(*args)
     captured = capsys.readouterr()
-    print(captured)
     assert json.loads(captured.out) == result
