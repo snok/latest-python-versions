@@ -1,24 +1,35 @@
+from distutils.util import strtobool
+import datetime
 import json
 import subprocess
 import sys
-from distutils.util import strtobool
 
 import requests
 from packaging import version as semver
 
 GHA_PYTHON_VERSIONS_URL = 'https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json'
-
+EOL_PYTHON_VERSIONS_URL = 'https://endoflife.date/api/python.json'
 
 def main(min_version: str, max_version: str, include_prereleases: str) -> None:
     """
     Set a LATEST_PYTHON_VERSIONS environment variable, and a latest-python-versions output,
     containing the latest Python versions found within the specified bounds.
 
-    :param min_version: The version lower bound.
-    :param max_version: The version upper bound.
+    :param min_version: The major.minor version lower bound or 'EOL'.
+    :param max_version: The major.minor version upper bound or 'latest'.
     :param include_prereleases: Whether to include pre-releases. Defaults to false on an action level.
     """
-    min_version = semver.parse(min_version)
+    if min_version.upper() == 'EOL':
+        future = datetime.date.today() + datetime.timedelta(3650)
+        for release in requests.get(EOL_PYTHON_VERSIONS_URL).json():
+            if (
+                datetime.date.today() < datetime.date.fromisoformat(release['eol'])
+                and datetime.date.fromisoformat(release['eol']) < future
+            ):
+                future = datetime.date.fromisoformat(release['eol'])
+                min_version = semver.parse(release['cycle'])
+    else:
+        min_version = semver.parse(min_version)
     max_version = semver.parse(max_version) if max_version != 'latest' else semver.parse('4.0')
     parsed_include_prereleases = strtobool(include_prereleases) == 1
 

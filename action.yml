@@ -5,14 +5,14 @@ branding:
   color: "blue"
 inputs:
   min-version:
-    description: 'The minimum minor version to include.'
+    description: 'The minimum major.minor version to include or "EOL".'
     required: true
   max-version:
-    description: 'The maximum minor version to include.'
+    description: 'The maximum major.minor version to include or "latest".'
     required: false
     default: 'latest'
   include-prereleases:
-    description: 'Whether to include new minor version of Python that have no official releases.'
+    description: 'Whether to include new version of Python that have no official releases.'
     required: false
     default: 'false'
 outputs:
