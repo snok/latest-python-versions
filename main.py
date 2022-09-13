@@ -1,14 +1,15 @@
-from distutils.util import strtobool
 import datetime
 import json
 import subprocess
 import sys
+from distutils.util import strtobool
 
 import requests
 from packaging import version as semver
 
 GHA_PYTHON_VERSIONS_URL = 'https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json'
 EOL_PYTHON_VERSIONS_URL = 'https://endoflife.date/api/python.json'
+
 
 def main(min_version: str, max_version: str, include_prereleases: str) -> None:
     """
