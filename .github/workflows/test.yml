@@ -46,7 +46,7 @@ jobs:
           pip install pyparsing==2.4.7
           poetry install --no-interaction --no-root
         if: steps.cache-venv.outputs.cache-hit != 'true'
-      - run: source $VENV && pytest main_tests.py --cov-report=xml
+      - run: source $VENV && pytest --cov-report=xml
       - uses: codecov/codecov-action@v2
         with:
           file: ./coverage.xml
