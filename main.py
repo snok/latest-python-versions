@@ -1,6 +1,6 @@
 import datetime
 import json
-import subprocess
+import os
 import sys
 from distutils.util import strtobool
 
@@ -51,8 +51,11 @@ def main(min_version: str, max_version: str, include_prereleases: str) -> None:
 
     version_json = json.dumps(list(versions.values()))
 
-    subprocess.call(['echo', f'"LATEST_PYTHON_VERSIONS={version_json}"', '>>', '"$GITHUB_ENV"'])
-    subprocess.call(['echo', f'latest-python-versions={version_json}', '>>', '$GITHUB_OUTPUT'])
+    with open(os.environ['GITHUB_ENV'], 'a') as f:
+        f.write(f'LATEST_PYTHON_VERSIONS={version_json}')
+
+    with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+        f.write(f'latest-python-versions={version_json}')
 
     print(version_json)
 
